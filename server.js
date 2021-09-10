@@ -7,7 +7,7 @@ import Pusher from "pusher"
 
 // App config
 const app = express();
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -41,19 +41,18 @@ db.once("open", () => {
     const changeStream = msgCollection.watch();
 
     changeStream.on('change', (change) => {
-        console.log("A change occurred ", change);
+        // console.log("A change occurred ", change);
 
         if(change.operationType === 'insert'){
 
             const messageDetails = change.fullDocument;
-            try{
-                pusher.trigger('messages', 'inserted', {
-                    name: messageDetails.user,
-                    message: messageDetails.message,
-                })
-            }catch (e) {
-                console.log(e);
-            }
+         
+            pusher.trigger("messages", "inserted", {
+                name: messageDetails.name,
+                message: messageDetails.message,
+                
+            }).then(console.log).catch(e=> console.log(e));
+
         }else{
             console.log('Error triggering pusher')
         }
@@ -91,7 +90,7 @@ app.get("/", (req, res) => res.status(200).send("Hello from whatsapp backend"));
 
 
 // Listener
-app.listen(port, () => {console.log(`Your first Express app is successfully running! You can view the output of this app at http://localhost:${port}`)});
+app.listen(port, () => {console.log(`App lestining on http://localhost:${port}`)});
 
 
 
