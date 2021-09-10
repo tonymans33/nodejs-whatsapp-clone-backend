@@ -2,7 +2,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Messages from './dbMessages.js';
-import Pusher from "pusher"
+import Pusher from "pusher";
+import cors from 'cors';
 
 
 // App config
@@ -15,6 +16,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "*");
     next();
 });
+app.use(cors());
 
 const pusher = new Pusher({
     appId: "1264487",
@@ -41,7 +43,6 @@ db.once("open", () => {
     const changeStream = msgCollection.watch();
 
     changeStream.on('change', (change) => {
-        // console.log("A change occurred ", change);
 
         if(change.operationType === 'insert'){
 
@@ -50,7 +51,7 @@ db.once("open", () => {
             pusher.trigger("messages", "inserted", {
                 name: messageDetails.name,
                 message: messageDetails.message,
-                
+
             }).then(console.log).catch(e=> console.log(e));
 
         }else{
