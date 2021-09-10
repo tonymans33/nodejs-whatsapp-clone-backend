@@ -51,6 +51,8 @@ db.once("open", () => {
             pusher.trigger("messages", "inserted", {
                 name: messageDetails.name,
                 message: messageDetails.message,
+                received: messageDetails.received
+            
 
             }).then(console.log).catch(e=> console.log(e));
 
