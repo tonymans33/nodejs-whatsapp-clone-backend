@@ -91,7 +91,7 @@ app.get("/", (req, res) => res.status(200).send("Hello from whatsapp backend"));
 
 
 // Listener
-app.listen(port, () => console.log('Listening on localhost:', port));
+app.listen(port, () => {console.log(`Your first Express app is successfully running! You can view the output of this app at http://localhost:${port}`)});
 
 
 
