@@ -1,99 +1,43 @@
-// App dependencies
-import express from 'express';
-import mongoose from 'mongoose';
-import Messages from './dbMessages.js';
-import Pusher from "pusher";
-import cors from 'cors';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
+var app = require('./app');
 
-// App config
-const app = express();
-const port = process.env.PORT || 8000;
-
-app.use(express.json());
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "*");
-    next();
-});
-app.use(cors());
-
-const pusher = new Pusher({
-    appId: "1264487",
-    key: "48e088046766dcbb4a3b",
-    secret: "4330420cecaeb45b953b",
-    cluster: "eu",
-    useTLS: true
+dotenv.config({
+    path: './config.env'
 });
 
-// Database setup
-const connection_url = 'mongodb+srv://admin:4YBOPOYkEztx8KWe@cluster0.dzxux.mongodb.net/whatsappclonedb?retryWrites=true&w=majority';
+process.on('uncaughtException', err => {
+    console.log('UNCAUGHT EXCEPTION!!! shutting down...');
+    console.log(err.name, err.message);
+    process.exit(1);
+});
 
-mongoose.connect(connection_url, {
+
+// Start the server
+const port = process.env.PORT;
+app.listen(port, () => {
+    console.log(`Application is running on http://localhost:${port}`);
+});
+
+// Connect the database
+const database = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+
+mongoose.connect(database, {
     useNewUrlParser: true,
     useUnifiedTopology: true
+}).then(con => {
+    console.log('DB connection Successfully!');
 });
 
-const db = mongoose.connection;
-
-db.once("open", () => {
-    console.log("Db Connected")
-
-    const msgCollection = db.collection('messagecontents');
-    const changeStream = msgCollection.watch();
-
-    changeStream.on('change', (change) => {
-
-        if(change.operationType === 'insert'){
-
-            const messageDetails = change.fullDocument;
-         
-            pusher.trigger("messages", "inserted", {
-                name: messageDetails.name,
-                message: messageDetails.message,
-                received: messageDetails.received
-            
-
-            }).then(console.log).catch(e=> console.log(e));
-
-        }else{
-            console.log('Error triggering pusher')
-        }
+process.on('unhandledRejection', err => {
+    console.log('UNHANDLED REJECTION!!!  shutting down ...');
+    console.log(err.name, err.message);
+    server.close(() => {
+        process.exit(1);
     });
 });
 
-
-
-app.post('/messages/new', (req, res) => {
-    const dbMessage = req.body;
-
-    Messages.create(dbMessage, (err, data) => {
-
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(201).send(data)
-        }
-    })
-})
-
-app.get('/messages/sync', (req, res) => {
-
-    Messages.find((err, data) => {
-
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(200).send(data)
-        }
-    })
-})
-
-app.get("/", (req, res) => res.status(200).send("Hello from whatsapp backend"));
-
-
-// Listener
-app.listen(port, () => {console.log(`App lestining on http://localhost:${port}`)});
 
 
 
