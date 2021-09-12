@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 var app = require('./app');
 
 dotenv.config({
-    path: './config.env'
+    path: './.env'
 });
 
 process.on('uncaughtException', err => {
