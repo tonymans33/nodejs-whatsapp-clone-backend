@@ -4,6 +4,7 @@ require('express-group-routes');
 
 var router = express.Router();
 
+
 router.post( '/' , chatController.insertOneChat);
 router.get( '/' , chatController.getAllChats);
 
