@@ -1,7 +1,7 @@
 const Message = require('../models/messageModel');
 const pusher = require('../utils/pusher');
 
-exports.syncMessages = (req, res) => {
+exports.getAllMessages = (req, res) => {
 
     Message.find((err, data) => {
 
@@ -13,7 +13,7 @@ exports.syncMessages = (req, res) => {
     })
 };
 
-exports.insertMessage = (req, res) => {
+exports.insertOneMessage = (req, res) => {
 
     const newMessage = req.body;
 

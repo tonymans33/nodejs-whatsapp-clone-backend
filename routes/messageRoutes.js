@@ -1,11 +1,11 @@
 const express= require('express');
-const chatController = require('../controllers/chatController');
+const messageController = require('../controllers/messageController');
 require('express-group-routes');
 
 var router = express.Router();
 
-router.post( '/' , chatController.insertOneChat);
-router.get( '/' , chatController.getAllChats);
+router.post( '/' , messageController.insertOneMessage);
+router.get( '/' , messageController.getAllMessages);
 
 // test route
 router.get('/test', (req, res) => res.status(200).send("Test API is working!"));
