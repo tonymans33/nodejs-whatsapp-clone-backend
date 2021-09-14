@@ -4,8 +4,16 @@ services:
     build: .
     ports: 
       - "9000:9000"
-    volumes: 
-      - ./:/app:ro
-      - /app/node_modules
     env_file: 
       - ./.env
+
+  mongo:
+    image: mongo
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=tony
+      - MONGO_INITDB_ROOT_PASSWORD=123123
+    volumes: 
+      - mongo-db:/data/db
+
+volumes: 
+  mongo-db:
