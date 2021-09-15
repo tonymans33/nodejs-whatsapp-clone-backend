@@ -8,8 +8,11 @@ var app = express();
 
 app.use("/chats", chatRoutes);
 app.use("/messages", messageRoutes);
-app.get('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/test', (req, res) => res.status(200).send("Test API is working!"));
+// Swagger route 
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerDocument));
+
+app.get('/test', (req, res) => res.status(200).send("Test API is working!!!"));
 
 module.exports = app;
