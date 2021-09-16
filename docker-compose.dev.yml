@@ -11,9 +11,12 @@ services:
     environment: 
       - MONGO_USER=tony
       - MONGO_PASSWORD=123123
+      - SESSION_SECRET=secret
+
     command: npm run dev
 
   mongo:
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=tony
       - MONGO_INITDB_ROOT_PASSWORD=123123
+  

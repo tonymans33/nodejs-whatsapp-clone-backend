@@ -1,10 +1,16 @@
 const express = require('express');
-const cors = require('cors');
-const apiRouter = require("./routes/api");
 
 var app = express();
 
-// Allow Cross-Origin requests
+const cors = require('cors');
+const apiRouter = require("./routes/api");
+
+
+const session = require('express-session');
+const redis = require('redis')
+
+
+// Allow Cros-Origin requests
 app.use(cors());
 
 // Body parser, reading data from body into req.body
@@ -14,6 +20,27 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "*");
     next();
 });
+
+// Redis configurations 
+let RedisStore = require('connect-redis')(session)
+let redisClient = redis.createClient({
+    host: config.redis.REDIS_URL,
+    port: config.redis.REDIS_PORT
+})
+
+app.use(
+    session({
+    store: new RedisStore({ client:redisClient }),
+    secret: config.redis.SESSION_SECRET,
+    cookie:{
+        secure:false,
+        resave: false,
+        saveUninitialized: false,
+        httpOnly: true,
+        maxAge: 30000
+    },
+}))
+
 
 // Routes
 app.use("/api", apiRouter);

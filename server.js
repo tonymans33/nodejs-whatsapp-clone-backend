@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 var app = require('./app');
 const config = require('./config/config');
 
+
 dotenv.config({
     path: './.env'
 });
@@ -40,7 +41,7 @@ const connectToDatabase = (DB_URL) => {
     });
 }
 
-connectToDatabase(database);
+connectToDatabase(mongodb);
 
 process.on('unhandledRejection', err => {
     console.log('UNHANDLED REJECTION!!!  shutting down ...');
