@@ -1,36 +1,45 @@
 const Chat = require('../models/chatModel');
 const pusher = require('../utils/pusher');
 
-exports.getAllChats = (req, res) => {
+exports.getAllChats = async (req, res) => {
 
-    Chat.find((err, data) => {
+   try{
 
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(200).send(data)
-        }
+    const chats = await Chat.find()
+
+    res.status(200).json({
+        status:"success",
+        data: chats
     })
+
+   } catch (e) {
+        res.status(400).json({
+            status: "fail",
+            message: e.message
+        })
+   }
+    
 };
 
-exports.insertOneChat = (req, res) => {
+exports.insertOneChat = async (req, res) => {
 
-    const newChat = req.body;
+    try{
 
-    Chat.create(newChat, (err, data) => {
+        const newChat = await Chat.create(req.body)
 
-        if(err){
-            res.status(500).send(err)
-        }else{
+        pusher.trigger("chats", "inserted", {
+            name: newChat.name,
+    
+        }).then(console.log).catch(e=> console.log(e));
+    
+    
+        res.status(201).send(data)
 
-            pusher.trigger("chats", "inserted", {
-                name: newChat.name,
-
-            }).then(console.log).catch(e=> console.log(e));
-
-
-            res.status(201).send(data)
-        }
-    })
-
+    } catch (e){
+        res.status(400).json({
+            status: "fail",
+            message: e.message
+        })
+    }
+  
 };

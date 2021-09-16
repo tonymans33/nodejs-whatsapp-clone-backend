@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 var ChatSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    }
 });
 
 var Chat = mongoose.model("Chat", ChatSchema);
