@@ -8,7 +8,9 @@ exports.getAllMessages = async (req, res) => {
 
         res.status(200).json({
             status:"success",
-            data: messages
+            data: messages,
+            message: "messages retreived successfully !"
+
         })
 
    } catch (e) {
@@ -34,7 +36,11 @@ exports.insertOneMessage = async (req, res) => {
         }).then(console.log).catch(e=> console.log(e));
     
     
-        res.status(201).send(data)
+        res.status(201).json({
+            status: "success",
+            data: newMessage,
+            message: "Message created successfully !"
+        })
 
     } catch (e){
         res.status(400).json({

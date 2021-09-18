@@ -20,6 +20,7 @@ exports.signUp = async (req, res) => {
             data : {
                 user : newUser,
             },
+            message: "User signed up successfully !"
         });
 
     } catch (e){
@@ -42,7 +43,7 @@ exports.login = async (req, res) => {
 
             res.status(404).json({
                 status: "fail",
-                "message": "User not found!"
+                "message": "User not found !"
             })
         }
 
@@ -51,12 +52,13 @@ exports.login = async (req, res) => {
         if(isCorrect){
             req.session.user = user
             res.status(200).json({
-                status: "success"
+                status: "success",
+                message: "User logged in successfully !"
             })
         }else{
             res.status(400).json({
                 status: "fail",
-                message: "Incorrect username or password"
+                message: "Incorrect username or password !"
             })
         }
 

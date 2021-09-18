@@ -9,7 +9,8 @@ exports.getAllChats = async (req, res) => {
 
     res.status(200).json({
         status:"success",
-        data: chats
+        data: chats,
+        message: "Chats retreived successfully !"
     })
 
    } catch (e) {
@@ -33,7 +34,11 @@ exports.insertOneChat = async (req, res) => {
         }).then(console.log).catch(e=> console.log(e));
     
     
-        res.status(201).send(data)
+        res.status(201).json({
+            status: "success",
+            data: newChat,
+            message: "Chat created successfully !"
+        })
 
     } catch (e){
         res.status(400).json({

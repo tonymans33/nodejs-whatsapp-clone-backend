@@ -1,6 +1,10 @@
 version: "3"
 services:
-  whatsapp-backend:
+  nginx:
+    ports: 
+      - "9000:80"
+
+  node-app:
     build: 
       context: .
       args: 
@@ -8,14 +12,14 @@ services:
     volumes: 
       - ./:/app:ro
       - /app/node_modules
-    environment: 
+    environment:  
       - MONGO_USER=tony
       - MONGO_PASSWORD=123123
       - SESSION_SECRET=secret
 
     command: npm run dev
 
-  mongo:
+  mongo:xs
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=tony
       - MONGO_INITDB_ROOT_PASSWORD=123123

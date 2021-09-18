@@ -31,6 +31,8 @@ let redisClient = redis.createClient({
     port: config.redis.REDIS_PORT
 })
 
+app.enable("trust proxy");
+
 app.use(
     session({
     store: new RedisStore({ client:redisClient }),
@@ -40,7 +42,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         httpOnly: true,
-        maxAge: 30000
+        maxAge: 6000
     },
 }))
 
