@@ -1,12 +1,14 @@
-const express= require('express');
-const messageController = require('../controllers/messageController');
-const protect = require('../middleware/authMiddleware');
+const app= require('express');
 require('express-group-routes');
 
-var router = express.Router();
+
+const messageController = require('../controllers/messageController');
+const AuthMiddleware = require('../middleware/authMiddleware');
+
+var router = app.Router();
 
 router.route('/')
-    .get(protect, messageController.getAllMessages)
-    .post(protect, messageController.insertOneMessage)
+    .get(AuthMiddleware, messageController.getAllMessages)
+    .post(AuthMiddleware, messageController.insertOneMessage)
 
 module.exports = router;

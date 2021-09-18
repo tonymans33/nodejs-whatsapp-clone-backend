@@ -1,13 +1,16 @@
-const express= require('express');
-const chatController = require('../controllers/chatController');
+const app= require('express');
+
 require('express-group-routes');
-const protect = require('../middleware/authMiddleware');
+
+const AuthMiddleware = require('../middleware/authMiddleware');
+const chatController = require('../controllers/chatController');
 
 
-var router = express.Router();
+
+var router = app.Router();
 
 router.route('/')
-    .get(protect, chatController.getAllChats)
-    .post(protect, chatController.insertOneChat)
+    .get(AuthMiddleware, chatController.getAllChats)
+    .post(AuthMiddleware, chatController.insertOneChat)
 
 module.exports = router;
