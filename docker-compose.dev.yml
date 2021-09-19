@@ -19,7 +19,7 @@ services:
 
     command: npm run dev
 
-  mongo:xs
+  mongo:
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=tony
       - MONGO_INITDB_ROOT_PASSWORD=123123
