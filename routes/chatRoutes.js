@@ -1,17 +1,16 @@
-const express= require('express');
-const messageController = require('../controllers/messageController');
+const app= require('express');
+
 require('express-group-routes');
 
-var router = express.Router();
+const AuthMiddleware = require('../middleware/authMiddleware');
+const chatController = require('../controllers/chatController');
 
 
-router.group( '/messages', (router) => {
 
-    router.post( '/insert' , messageController.insertMessage);
-    router.get( '/sync' , messageController.syncMessages);
-});
+var router = app.Router();
 
-// test route
-router.get('/test', (req, res) => res.status(200).send("Test API is working!"));
+router.route('/')
+    .get(AuthMiddleware, chatController.getAllChats)
+    .post(AuthMiddleware, chatController.insertOneChat)
 
 module.exports = router;

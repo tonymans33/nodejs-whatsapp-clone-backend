@@ -1,0 +1,1253 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is hovo main user service API doc.",
+        "version": "1.0.0",
+        "title": "User Service",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "t.mansour@hovoapp.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "https://hovo-user-backend.herokuapp.com",
+    "basePath": "/api",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+
+        "/auth/signUp": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user Registration",
+                "description": "This endpoint to register new user.",
+                "operationId": "userSignUp",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name" : "name",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string",
+                        "description" : "string name min 4 char : tony"
+                    },
+                    {
+                        "name" : "email",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "email",
+                        "description" : "string email format : adm@admin.com"
+                    },
+                    {
+                        "name" : "password",
+                        "in" : "form-data",
+                        "required": false,
+                        "type": "password",
+                        "description" : "string password min 8 : Tony123"
+                    },
+                    {
+                        "name" : "phoneNumber",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "phone number",
+                        "description" : "string phone number : 01284165074 or 0120-222-3636"
+                    },
+                    {
+                        "name" : "image",
+                        "in" : "form-data",
+                        "required": false,
+                        "type": "image | url"
+                    },
+                    {
+                        "name" : "FcmToken",
+                        "in" : "form-data",
+                        "required": false,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully registered !",
+                        "schema":
+                        {
+                            "$ref": "#definitions/userAuth"
+                        }
+
+                    },
+
+                    "422": {
+                        "description": "Unprocessable Entity"
+
+                    },
+
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/auth/signIn/email": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user login",
+                "description": "Login with email and password",
+                "operationId": "userSignInEmail",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "username",
+                        "in": "form-data",
+                        "required": true,
+                        "type": "email",
+                        "example": "ad@admin.com"
+                    },
+                    {
+                        "name": "password",
+                        "in": "form-data",
+                        "required": true,
+                        "type": "password",
+                        "example": "Tonymm123"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "You logged in successfully",
+                        "schema":
+                        {
+                            "$ref": "#definitions/userAuth"
+                        }
+
+                    },
+                    "401": {
+                        "description": "Bad request",
+                        "schema" : {
+
+                            "example" : {
+                                "success": false,
+                                "error": "invalid_credentials ! Invalid username or password"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "could_not_create_token"
+                    }
+                }
+            }
+        },
+        "/auth/signIn/phone-number": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user login",
+                "description": "Login with phone number ",
+                "operationId": "userSignInPhoneNumber",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "username",
+                        "in": "form-data",
+                        "required": true,
+                        "type": "phone number",
+                        "example": "01284165074"
+                    },
+                    {
+                        "name": "password",
+                        "in": "form-data",
+                        "required": true,
+                        "type": "password",
+                        "example": "Tonymm123"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "You logged in successfully",
+                        "schema":
+                        {
+                            "$ref": "#definitions/userAuth"
+                        }
+
+                    },
+                    "401": {
+                        "description": "Bad request",
+                        "schema" : {
+
+                            "example" : {
+                                "success": false,
+                                "error": "invalid_credentials ! Invalid username or password"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "could_not_create_token"
+                    }
+                }
+            }
+        },
+        "/auth/signIn/facebook": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user login social media",
+                "description": "Login with facebook ",
+                "operationId": "userSignInFacebook",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "You logged in successfully",
+                        "schema":
+                        {
+                            "$ref": "#definitions/user"
+                        }
+
+                    },
+                    "401": {
+                        "description": "Bad request",
+                        "schema" : {
+
+                            "example" : {
+                                "success": false,
+                                "error": "invalid_credentials ! Invalid username or password"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "could_not_create_token | internal server error"
+                    }
+                }
+            }
+        },
+        "/auth/signOut": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "logout",
+                "description": "user logout from system",
+                "operationId": "userLogout",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "default": {
+                        "schema":
+                        {
+                            "example": {
+                                "message" : "User successfully signed out"
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        },
+        "/auth/phone/verify/code": {
+            "get": {
+                "tags": [
+                    "auth", "verification"
+                ],
+                "summary": "user verify code",
+                "description": "user gets phone number verification code",
+                "operationId": "userVerifyPhoneNumberCode",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name" : "phoneNumber",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string",
+                        "description" : "string phone number : 01284165074 or 0120-222-3636"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "code sent successfully ",
+                        "schema": {
+                            "example": {
+                                "message" : "We sent a code to your phone number, please check your phone to verify it",
+                                "request_id": "62a0f22f8b4446be94c29cbc21c75c7e"
+                            }
+                        }
+
+                    },
+                    "401": {
+                        "description" : "Bad request",
+                        "schema": {
+                            "example": {
+                                "message": "The code is failed to sent"
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        },
+        "/auth/phone/verify": {
+            "get": {
+                "tags": [
+                    "auth", "verification"
+                ],
+                "summary": "user verify phone number",
+                "description": "user verify phone number",
+                "operationId": "userVerifyPhoneNumber",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name" : "request_id",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string",
+                        "description" : "string request_id "
+                    },
+                    {
+                        "name" : "code",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string",
+                        "description" : "string code sent to user phone"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "phone verified successfully ",
+                        "schema": {
+                            "example": {
+                                "message" : "Phone number verified successfully !"
+                            }
+                        }
+
+                    },
+                    "401": {
+                        "description" : "Bad request",
+                        "schema": {
+                            "example": {
+                                "message": "The code is not correct"
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        },
+        "/auth/token/generate": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "token generate",
+                "description": "generate token for an existing user with phone number",
+                "operationId": "tokenGenerate",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name" : "phoneNumber",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string",
+                        "description" : "string phone number that exists in database : 01284165074 or 0120-222-3636"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "phone verified successfully ",
+                        "schema": {
+                            "example": {
+                                "message" : "token generated successfully !",
+                                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvc2lnblVwIiwiaWF0IjoxNjI2MjU4MzU4LCJleHAiOjE2MjYyNjE5NTgsIm5iZiI6MTYyNjI1ODM1OCwianRpIjoiRlRXMEZIQmxkUDB6bTAyTiIsInN1YiI6NDEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.QQMZKKQXDI_XVWAA8FwXW43LhqMPZCpnMPo196zvHaw"
+                            }
+                        }
+
+                    },
+                    "401": {
+                        "description" : "Bad request",
+                        "schema": {
+                            "example": {
+                                "message": "The code is not correct"
+                            }
+                        }
+
+                    },
+                    "404": {
+                        "description" : "user not found request",
+                        "schema": {
+                            "example": {
+                                "message": "Unable to create token, please make sure you entered an valid, existing phone number "
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        },
+        "/auth/user": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "auth user",
+                "description": "get the recent authenticated user",
+                "operationId": "authUser",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "auth user retrieved successfully",
+                        "schema": {
+                            "$ref": "#definitions/user"
+                        }
+
+                    }
+                }
+
+            }
+        },
+
+        "/users/exists": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "user existence",
+                "description": "check if user exists or not in database by phone number",
+                "operationId": "userExists",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    }
+
+                ],
+                "responses": {
+                    "true": {
+                        "description" : "user exists",
+                        "schema": {
+                            "example": {
+                                "success" : "true"
+                            }
+                        }
+
+                    },
+                    "false": {
+                        "description" : "user not exists",
+                        "schema": {
+                            "example": {
+                                "success" : "false"
+                            }
+                        }
+                    }
+                }
+
+            }
+        },
+        "/users/user/{id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "show user 'user profile'",
+                "description": "get spec user with id and token",
+                "operationId": "showUser",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "user retrieved successfully",
+                        "schema": {
+                            "$ref": "#definitions/user"
+                        }
+
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+
+            }
+        },
+        "/users/": {
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "update user",
+                "description": "update current user with token and updated data",
+                "operationId": "userExists",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    },
+                    {
+                        "name" : "name",
+                        "in" : "query",
+                        "required": false,
+                        "type": "string",
+                        "description" : "string name min 4 char : tony"
+                    },
+                    {
+                        "name" : "email",
+                        "in" : "query",
+                        "required": false,
+                        "type": "email",
+                        "description" : "string email format : adm@admin.com"
+                    },
+                    {
+                        "name" : "phoneNumber",
+                        "in" : "query",
+                        "required": false,
+                        "type": "phone number",
+                        "description" : "string phone number : 01284165074 or 0120-222-3636"
+                    },
+                    {
+                        "name" : "image",
+                        "in" : "query",
+                        "required": false,
+                        "type": "image | url"
+                    },
+                    {
+                        "name" : "FcmToken",
+                        "in" : "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "address",
+                        "in" : "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "balance",
+                        "in" : "query",
+                        "required": false,
+                        "type": "string"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "user updated successfully",
+                        "schema": {
+                            "$ref": "#definitions/user"
+                        }
+
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+
+            }
+        },
+        "/shipments/price/calculate": {
+            "get": {
+                "tags": [
+                    "shipment", "payment"
+                ],
+                "summary": "calc price",
+                "description": "get the price of given shipment data",
+                "operationId": "shipmentPrice",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    },
+                    {
+                        "name" : "drop_long",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "drop_lat",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "pickup_long",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "pickup_lat",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "truck_id",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "int"
+                    },
+                    {
+                        "name" : "price",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "numeric"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "price calculated successfully",
+                        "schema": {
+                            "example": {
+                                "price" : "2291.645"
+                            }
+                        }
+
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+
+            }
+        },
+        "/shipments/order/confirm": {
+            "post": {
+                "tags": [
+                    "shipment"
+                ],
+                "summary": "order shipment",
+                "description": "placing an order to store a shipment with given data",
+                "operationId": "shipmentOrder",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    },
+                    {
+                        "name" : "weight",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "int"
+                    },
+                    {
+                        "name" : "drop_long",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "drop_lat",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "pickup_long",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "pickup_lat",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "truck_id",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "int"
+                    },
+                    {
+                        "name" : "pickUpDate",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "trucksQuantity",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "int"
+                    },
+                    {
+                        "name" : "payment_method",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name" : "extra_data",
+                        "in" : "form-data",
+                        "required": true,
+                        "type": "array",
+                        "description" : "adding any extra data like furniture specifics",
+                        "example" : "['floor' => 1, 'floorNumber' => 2]"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "shipment successfully ordered",
+                        "schema": {
+                            "$ref" : "#/definitions/shipment"
+                        }
+
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+
+            }
+        },
+        "/shipments/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "shipment"
+                ],
+                "summary": "cancel shipment",
+                "description": "deleting a shipment",
+                "operationId": "shipmentDelete",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "int",
+                        "required": true,
+                        "value": "shipment id to delete"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "shipment successfully ordered",
+                        "schema": {
+                            "example" : {
+                                "message" : "Shipment deleted"
+                            }
+                        }
+
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+
+            }
+        },
+        "/shipments/apply/promo/{name}": {
+            "get": {
+                "tags": [
+                    "shipment", "promo"
+                ],
+                "summary": "add promo code ",
+                "description": "add promo code to get a discount",
+                "operationId": "shipmentPromo",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "value": "Bearer <token>"
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "type": "string",
+                        "required": true,
+                        "value": "promo code name"
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description" : "promo code added successfully",
+                        "schema": {
+                            "example" : {
+                                "message" : "promo code added successfully"
+                            }
+                        }
+
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+
+            }
+        }
+
+    },
+
+
+    "definitions": {
+
+        "userAuth": {
+            "example" :
+            {
+                "user": {
+                    "id": 54,
+                    "name": "asdlkasnd",
+                    "email": "tonymansour445@assst.com",
+                    "image": "https://scontent.fcai1-2.fna.fbcdn.net/v/t1.6435-9/196924605_4677665498917077_3683690729542596679_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeHk5GjcmrKCU6_zZv3sSPIeaYlujR1Z1a9piW6NHVnVr7AqQ-PPD2isc4xQeF10LNf0ITyDXDCPwkn6BXGyhU09&_nc_ohc=sAns39tgyhcAX_6Sd0W&tn=U17_BwhX6fjOAFsZ&_nc_ht=scontent.fcai1-2.fna&oh=aaf48f82745d65865abf0f788076e911&oe=60F4C0CD",
+                    "phoneNumber": "01228935712",
+                    "fcm": "1231230128049218398120398124",
+                    "provider_id": null,
+                    "balance": null,
+                    "numberOfShipments": 0,
+                    "address": null
+                },
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvc2lnblVwIiwiaWF0IjoxNjI2MzUzMTQyLCJleHAiOjE2MjYzNTY3NDIsIm5iZiI6MTYyNjM1MzE0MiwianRpIjoiNmhyTmFHalpOU2ltQmg5WiIsInN1YiI6NTQsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ph1rW8wr4rkznJqepq0zsZauUJ2kIchA9xEBm1HjvMU",
+                "message": "User registered | signed in successfully !"
+            }
+
+        },
+
+        "user": {
+            "example": {
+
+                "user": {
+                    "id": 54,
+                    "name": "asdlkasnd",
+                    "email": "tonymansour445@assst.com",
+                    "image": "https://scontent.fcai1-2.fna.fbcdn.net/v/t1.6435-9/196924605_4677665498917077_3683690729542596679_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeHk5GjcmrKCU6_zZv3sSPIeaYlujR1Z1a9piW6NHVnVr7AqQ-PPD2isc4xQeF10LNf0ITyDXDCPwkn6BXGyhU09&_nc_ohc=sAns39tgyhcAX_6Sd0W&tn=U17_BwhX6fjOAFsZ&_nc_ht=scontent.fcai1-2.fna&oh=aaf48f82745d65865abf0f788076e911&oe=60F4C0CD",
+                    "phoneNumber": "01228935712",
+                    "fcm": "1231230128049218398120398124",
+                    "provider_id": null,
+                    "balance": null,
+                    "numberOfShipments": 0,
+                    "address": null
+                },
+                "message": "User retrieved | updated successfully"
+            }
+
+        },
+
+        "shipment": {
+            "example": {
+
+                "shipment": {
+                    "id": 5,
+                    "weight": "50",
+                    "user_id": "5",
+                    "from": "12-Street,new Cairo,egypt",
+                    "to": "12-Street,new Cairo,egypt",
+                    "pickUpDate": "2021-7-20",
+                    "trucksQuantity": "2",
+                    "truck_id": "1",
+                    "payment_method": "cach",
+                    "price": "500",
+                    "isPayed": null,
+                    "status": null,
+                    "driver_id": null,
+                    "extra_data": null,
+                    "created_at": "2021-07-16T12:24:27.000000Z",
+                    "updated_at": "2021-07-16T12:24:27.000000Z"
+                },
+
+                "message": "Your order has been placed successfully"
+            }
+
+        }
+
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

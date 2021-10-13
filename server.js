@@ -2,9 +2,11 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 var app = require('./app');
+const config = require('./config/config');
+
 
 dotenv.config({
-    path: './config.env'
+    path: './.env'
 });
 
 process.on('uncaughtException', err => {
@@ -15,20 +17,31 @@ process.on('uncaughtException', err => {
 
 
 // Start the server
-const port = process.env.PORT;
+const port = config.app.PORT;
 app.listen(port, () => {
     console.log(`Application is running on http://localhost:${port}`);
 });
 
-// Connect the database
-const database = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+// Database with mongo cluster
+const database = config.mongoSv.SERVER_URL.replace('<PASSWORD>', config.mongoSv.SERVER_PASSWORD);
 
-mongoose.connect(database, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(con => {
-    console.log('DB connection Successfully!');
-});
+// Database with mongo local dns  
+const mongodb = `mongodb://${config.mongoLc.MONGO_USER}:${config.mongoLc.MONGO_PASSWORD}@${config.mongoLc.MONGO_IP}:${config.mongoLc.MONGO_PORT}/?authSource=${config.mongoLc.MONGO_AUTH}`;
+
+const connectToDatabase = (DB_URL) => {
+
+    mongoose.connect(DB_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then(con => {
+        console.log('DB connection Successfully!');
+    }).catch((e) => {
+        console.log(e)
+        setTimeout(connectToDatabase, 5000)
+    });
+}
+
+connectToDatabase(mongodb);
 
 process.on('unhandledRejection', err => {
     console.log('UNHANDLED REJECTION!!!  shutting down ...');
